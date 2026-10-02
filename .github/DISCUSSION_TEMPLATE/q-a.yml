@@ -1,0 +1,60 @@
+title: "[質問] "
+body:
+  - type: markdown
+    attributes:
+      value: |
+        投稿の前に、[困ったときのプロンプト](../blob/main/docs/困ったときのプロンプト.md)でAIに聞き、過去の質問も検索してください。
+
+        **この投稿は公開されます。個人情報、市民からの相談内容、非公開資料、パスワード、APIキー、トークン、会議録の原文・全文・大量の本文断片は書かないでください。**
+
+        個別の連絡（LINE、メール、SNSのDMなど）では回答しません。回答は保証されず、有志が参加者同士で答え合う場です。
+  - type: input
+    id: council
+    attributes:
+      label: 議会
+      placeholder: 例：東京都○○区議会
+    validations:
+      required: true
+  - type: dropdown
+    id: stage
+    attributes:
+      label: いまの段階
+      options:
+        - 段階1：AIに議事録を入れて質問している
+        - 段階2：議事録をデータにしている
+        - 段階3：サイトとして公開しようとしている
+        - その他
+    validations:
+      required: true
+  - type: textarea
+    id: goal
+    attributes:
+      label: やろうとしていること
+      description: 何を目指して、どの手順を進めているかを書いてください
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: 起きたこと、表示されたメッセージ
+      description: エラー文は秘密情報を除いて貼ってください。スクリーンショットは公開してよい情報だけが写っているものにしてください
+    validations:
+      required: true
+  - type: textarea
+    id: asked-ai
+    attributes:
+      label: AIに何と聞き、何と返ってきたか
+      description: 長文や会議録本文は貼らず、要点だけを書いてください
+    validations:
+      required: true
+  - type: checkboxes
+    id: confirm
+    attributes:
+      label: 投稿前の確認
+      options:
+        - label: AIに聞き、過去の質問も検索しました
+          required: true
+        - label: 個人情報、相談内容、非公開資料、パスワード、APIキー、トークンを書いていません
+          required: true
+        - label: 会議録の原文・全文・大量の本文断片を貼っていません
+          required: true
