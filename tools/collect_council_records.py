@@ -15,13 +15,14 @@ OUTPUT = Path("collected_records")
 OUTPUT.mkdir(exist_ok=True)
 OFFICIAL = OUTPUT / "official_text"
 OFFICIAL.mkdir(exist_ok=True)
-NAME = re.compile(r"^○\s*鈴木[\s　]*綾子\s*$")
+NAME = re.compile(r"^○\s*鈴木[\s　]*綾子(?:\s*(?:氏|さん))?\s*$")
 SPEAKER = re.compile(r"^○\s*\S+")
 END_MARKERS = ("このページの読み方", "自治スコープ ｜", "© 2026")
 
 def extract_speeches(text):
     """可視テキストから本人の発言候補を取り出す。自動で答弁を割り当てない。"""
     if "発言の記録" not in text:
+        print("[DEBUG] 発言の記録 section not found", flush=True)
         return []
     text = text.split("発言の記録", 1)[1]
     lines = [s.strip() for s in text.splitlines()]
@@ -30,6 +31,7 @@ def extract_speeches(text):
         if any(line.startswith(x) for x in END_MARKERS):
             break
         if SPEAKER.match(line):
+            print(f"[DEBUG] Found speaker: {line[:120]}", flush=True)
             if capturing and parts:
                 speech = "\n".join(parts).strip()
                 if len(speech) > 10:
@@ -45,6 +47,7 @@ def extract_speeches(text):
         speech = "\n".join(parts).strip()
         if len(speech) > 10:
             result.append(speech)
+    print(f"[DEBUG] Extracted {len(result)} speeches", flush=True)
     return result
 
 async def main():
@@ -63,10 +66,14 @@ async def main():
                 break
             await btn.click()
             await page.wait_for_timeout(350)
+        body_text = await page.locator("body").inner_text()
+        print(f"[DEBUG] Profile page length: {len(body_text)}", flush=True)
+        (OUTPUT / "debug_profile.txt").write_text(body_text, encoding="utf-8")
         links = await page.locator('a[href*="/ward/koto/kaigiroku/"]').evaluate_all(
             "(els) => [...new Set(els.map(a => a.href.split('?')[0]))]"
         )
         links = [x for x in links if re.search(r"/kaigiroku/\d+$", x)]
+        print(f"[DEBUG] Found {len(links)} meeting links", flush=True)
         if not links:
             raise RuntimeError("会議録リンクを取得できません。サイト構造を確認してください。")
         records, meeting_reports = [], []
@@ -95,6 +102,8 @@ async def main():
                 official_url = official_links[0] if official_links else None
                 match = re.search(r"20\d{2}[.年/-]\d{1,2}[.月/-]\d{1,2}", body[:600])
                 date = match.group(0) if match else ""
+                if i <= 3:
+                    (OUTPUT / f"debug_meeting_{i:03d}.txt").write_text(body, encoding="utf-8")
                 speeches = extract_speeches(body)
                 for j, speech in enumerate(speeches, 1):
                     records.append({
