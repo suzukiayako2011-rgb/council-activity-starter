@@ -1,0 +1,29 @@
+{
+  "schema_version": "starter-0.1",
+  "dataset": {
+    "slug": "fictional-town"
+  },
+  "records": [
+    {
+      "id": "fictional-town-000001",
+      "date": "2026-06-12",
+      "meeting_type": "本会議",
+      "committee": null,
+      "session_name": "架空町議会 2026年6月定例会",
+      "question_topic": "町立資料館の展示案内を読みやすくする",
+      "issue": "展示案内の文字が小さく読みづらい",
+      "proposal": "町立資料館の展示案内に大きな文字の版を用意する",
+      "answer_summary": "利用者の意見を聞き、案内の見直しを検討する旨の答弁",
+      "result_level": null,
+      "tags": [
+        "文化芸術"
+      ],
+      "local_tags": [
+        "資料館"
+      ],
+      "source_type": "議事録",
+      "source_url": null,
+      "follow_up": null
+    }
+  ]
+}
