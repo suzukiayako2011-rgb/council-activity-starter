@@ -1,6 +1,6 @@
 {
   // 自分用の名前に書き換える（半角英数字とハイフン）
-  "name": "my-council-record",
+  "name": "suzukiayako-council-record",
   "compatibility_date": "2026-09-01",
   // public フォルダの中身を、そのままサイトとして公開する
   "assets": {
